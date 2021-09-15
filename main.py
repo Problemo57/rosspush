@@ -1,5 +1,5 @@
 from replacemant import *
-from time_plan_parser import *
+from plan_parser import *
 
 def get_time_plan():
     base_url = "http://www.ross-schulen.info/stundenplan/"
@@ -39,7 +39,7 @@ if __name__ == "__main__":
     #replacement_plan = get_replacement_plan()
 
     #print(clean_table_index(get_table_index(replacement_plan)))
-    parse(time_plan)
+    print(parser_time_plan(time_plan))
 
     # print(check_changes(time_plan, "plan.htm"))
 

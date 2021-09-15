@@ -2,7 +2,7 @@ from abc import ABC
 from html.parser import HTMLParser
 
 
-class TimePlanParser(HTMLParser, ABC):
+class _TimePlanParser(HTMLParser, ABC):
     table_tag_level = 0
     time_table_table_found = 0  # 0: NO, 1: Found, 2: Write to time_plan
 
@@ -117,40 +117,54 @@ class TimePlanParser(HTMLParser, ABC):
         self.time_plan[self.time_day_count][self.time_hour_count][info_name] = data
 
 
-def clean_half_days(time_plan):
-    for h in range(1, len(time_plan)//2 + 1):
-        for d in range(1, len(time_plan[h+0.5]) + 1):
+def _clean_half_days(time_plan):
+    for d in range(1, len(time_plan)//2 + 1):
+        for h in range(1, len(time_plan[d+0.5]) + 1):
 
             # Remove nothing from .0 items
-            time_plan[h][d].pop("nothing")
+            time_plan[d][h].pop("nothing")
 
-            if time_plan[h + 0.5][d]["nothing"]:
+            if time_plan[d + 0.5][h]["nothing"]:
                 continue
 
             # Remove nothing from .5 items
-            time_plan[h + 0.5][d].pop("nothing")
+            time_plan[d + 0.5][h].pop("nothing")
 
             # Add time_plan from .5 to .0
-            time_plan[h][d]["alternative_plan"] = time_plan[h + 0.5][d]
+            time_plan[d][h]["alternative_plan"] = time_plan[d + 0.5][h]
 
-        time_plan.pop(h + 0.5)
+        time_plan.pop(d + 0.5)
 
 
-def remove_float(parsing_data):
+def _clean_free_hours(parsing_data):
+    for d in range(1, len(parsing_data) + 1):
+        before_true = False
+
+        for h in range(1, len(parsing_data[d]) + 1):
+
+            if before_true and parsing_data[d][h]["same_as_before"]:
+                parsing_data[d][h]["free"] = True
+
+            before_true = parsing_data[d][h]["free"]
+
+
+def _remove_float(parsing_data):
     return {int(k): v for k, v in parsing_data.items()}
 
 
-def clean_parsing_output(parsing_data):
-    clean_half_days(parsing_data)
-    parsing_data = remove_float(parsing_data)
+def _clean_parsing_output(parsing_data):
+    _clean_half_days(parsing_data)
+    _clean_free_hours(parsing_data)
+    parsing_data = _remove_float(parsing_data)
 
     return parsing_data
 
 
-def parse(time_plan):
-    parser = TimePlanParser()
+def parser_time_plan(time_plan):
+    parser = _TimePlanParser()
     parser.feed(time_plan)
     parsing_data = parser.time_plan
 
-    parsing_data = clean_parsing_output(parsing_data)
-    print(parsing_data)
+    parsing_data = _clean_parsing_output(parsing_data)
+    return parsing_data
+
