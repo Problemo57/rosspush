@@ -2,7 +2,7 @@ from abc import ABC
 from html.parser import HTMLParser
 
 
-class _TimePlanParser(HTMLParser, ABC):
+class _PlanParser(HTMLParser, ABC):
     table_tag_level = 0
     time_table_table_found = 0  # 0: NO, 1: Found, 2: Write to time_plan
 
@@ -160,11 +160,41 @@ def _clean_parsing_output(parsing_data):
     return parsing_data
 
 
+def _get_table_index(html):
+    table = html.split("<table cellpadding=4 cellspacing=4 border=0>")[1].split("</table>")[0]
+    return table.split("</tR>")[1:-1]
+
+
+def _clean_table_index(index):
+    # nobr musst be done before <tr><td valign=middle align=right></td><td valign=top></td>
+    useless_html = [
+        "<nobr>", "</nobr>",
+        "<tr><td valign=middle align=right></td><td valign=top></td>",
+        "<b>", "</b>", "<br>",
+        "<font color='#666666'>", "</font>",
+        "</td>", "</tD>",
+        " valign=top"
+    ]
+
+    for i in range(len(index)):
+
+        for r in useless_html:
+            index[i] = index[i].replace(r, "")
+
+        index[i] = index[i].split("<td>")[1:]
+
+    return index
+
+
 def parser_time_plan(time_plan):
-    parser = _TimePlanParser()
+    parser = _PlanParser()
     parser.feed(time_plan)
     parsing_data = parser.time_plan
 
     parsing_data = _clean_parsing_output(parsing_data)
     return parsing_data
 
+
+def parse_replacement_plan(replacement_plan):
+    table_index = _get_table_index(replacement_plan)
+    return _clean_table_index(table_index)

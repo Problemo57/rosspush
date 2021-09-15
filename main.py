@@ -1,19 +1,5 @@
-from replacemant import *
 from plan_parser import *
 from network import *
-
-def get_time_plan():
-    base_url = "http://www.ross-schulen.info/stundenplan/"
-    class_name = "Kla1_BGIT21.htm"
-    #class_name = "Kla1_PTA10.htm"
-    plan_url = base_url + class_name
-
-    website_user = "ross"
-    website_pass = "hannover"
-
-    plan_downloaded = requests.get(plan_url, auth=(website_user, website_pass)).text
-    return plan_downloaded
-
 
 def check_changes(plan, save_location):
 
