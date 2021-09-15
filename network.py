@@ -57,3 +57,8 @@ def get_teacher_plan(teacher_name):
     plan_url = base_url + teacher_name
 
     return _fetch_website(plan_url)
+
+
+def get_replacement_plan():
+    url = "http://www.ross-schulen.info/vertretungsplan/"
+    return _fetch_website(url)
