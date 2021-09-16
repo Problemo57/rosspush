@@ -22,9 +22,9 @@ def check_changes(plan, save_location):
 
 
 if __name__ == "__main__":
-    time_plan = get_all_class_names()
+    time_plan = get_room_plan("Rau1_H_0_1.htm")
     #replacement_plan = get_replacement_plan()
-    print(time_plan)
+    print(parse_room_plan(time_plan))
     #print(clean_table_index(get_table_index(replacement_plan)))
 
     # print(check_changes(time_plan, "plan.htm"))

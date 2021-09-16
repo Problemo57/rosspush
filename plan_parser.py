@@ -21,6 +21,10 @@ class _PlanParser(HTMLParser, ABC):
     # Used first to find the right table und second in handle_data to find free hours
     encounters = 0
 
+    def __init__(self, plan_typ):
+        super().__init__()
+        self.plan_typ = plan_typ
+
     def handle_starttag(self, tag, attrs):
         if tag == "table":
             self.table_tag_level += 1
@@ -186,9 +190,18 @@ def _clean_table_index(index):
     return index
 
 
-def parser_time_plan(time_plan):
-    parser = _PlanParser()
+def parse_time_plan(time_plan):
+    parser = _PlanParser("time_plan")
     parser.feed(time_plan)
+    parsing_data = parser.time_plan
+
+    parsing_data = _clean_parsing_output(parsing_data)
+    return parsing_data
+
+
+def parse_room_plan(room_plan):
+    parser = _PlanParser("room_plan")
+    parser.feed(room_plan)
     parsing_data = parser.time_plan
 
     parsing_data = _clean_parsing_output(parsing_data)
