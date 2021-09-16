@@ -1,6 +1,7 @@
 from plan_parser import *
 from network import *
 
+
 def check_changes(plan, save_location):
 
     try:
