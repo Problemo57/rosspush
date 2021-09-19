@@ -8,6 +8,7 @@ def addClient(post_data):
     db = Database("user.db")
 
     if post_data_json not in Database.db.items():
+        db.close()
         return 400
 
     db.add_entry(post_data_json["class_name"], post_data_json["token"])
