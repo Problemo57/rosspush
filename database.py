@@ -21,7 +21,10 @@ class Database:
         block_file(filename)
         self.filename = filename
 
-        with open(self.filename) as r:
+        # If file exists read it, if not make it
+        mode = "r" if os.path.isfile(filename) else "w"
+
+        with open(filename, mode) as r:
             filedata = r.read()
             if not filedata:
                 filedata = "{}"
