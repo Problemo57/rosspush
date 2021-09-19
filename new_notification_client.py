@@ -12,6 +12,7 @@ def addClient(post_data):
 
     db.add_entry(post_data_json["class_name"], post_data_json["token"])
     db.close()
+    return 200
 
 
 class MyServer(http.server.BaseHTTPRequestHandler):
@@ -23,6 +24,7 @@ class MyServer(http.server.BaseHTTPRequestHandler):
         self.send_response(status_code)
         self.send_header('Content-type', 'text/html')
         self.end_headers()
+        self.wfile.write(b'')
 
 
 if __name__ == "__main__":
