@@ -25,11 +25,15 @@ class Database:
         mode = "r" if os.path.isfile(filename) else "w"
 
         with open(filename, mode) as r:
-            filedata = r.read()
-            if not filedata:
-                filedata = "{}"
+            if mode == "r":
+                filedata = r.read()
+                if not filedata:
+                    filedata = "{}"
 
-            self.db = json.loads(filedata)
+                self.db = json.loads(filedata)
+
+            else:
+                self.db = {}
 
     def reset_database(self, class_names):
         self.db = {}
