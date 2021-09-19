@@ -4,9 +4,10 @@ from time import sleep
 
 
 def wait_until_file_is_free(filename):
-    print("Waiting for Database")
     while os.path.isfile(f"{filename}.lock"):
         sleep(1)
+
+    print("Database is free")
 
 
 def block_file(filename):
