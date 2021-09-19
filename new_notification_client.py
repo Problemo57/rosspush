@@ -9,11 +9,11 @@ def addClient(post_data):
 
     if post_data_json not in Database.db.items():
         db.close()
-        return 400
+        return "404"
 
     db.add_entry(post_data_json["class_name"], post_data_json["token"])
     db.close()
-    return 200
+    return "200"
 
 
 class MyServer(http.server.BaseHTTPRequestHandler):
@@ -22,10 +22,10 @@ class MyServer(http.server.BaseHTTPRequestHandler):
         post_data = self.rfile.read(content_length)
         status_code = addClient(post_data)
 
-        self.send_response(status_code)
+        self.send_response(200)
         self.send_header('Content-type', 'text/html')
         self.end_headers()
-        self.wfile.write(b'')
+        self.wfile.write(status_code.encode("utf-8"))
 
 
 if __name__ == "__main__":
