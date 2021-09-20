@@ -28,4 +28,4 @@ if __name__ == "__main__":
     if db.isEmpty():
         class_names = get_all_class_names()
         db.reset_database(class_names)
-
+    db.close()
