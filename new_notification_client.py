@@ -7,7 +7,7 @@ def addClient(post_data):
     post_data_json = json.loads(post_data)
     db = Database("user.db")
 
-    if post_data_json not in Database.db.items():
+    if post_data_json["class_name"] not in db.db:
         db.close()
         return "404"
 
