@@ -37,6 +37,11 @@ class Database:
             else:
                 self.db = {}
 
+    def isEmpty(self):
+        if self.db == {}:
+            return True
+        return False
+
     def reset_database(self, class_names):
         self.db = {}
 
