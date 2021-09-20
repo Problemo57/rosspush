@@ -75,14 +75,3 @@ class Database:
         fp.close()
 
         os.remove(f"{self.filename}.lock")
-
-
-def main():
-    db = Database("user.db")
-    db.reset_database(["1", "2", "5"])
-    print(db.db)
-    db.add_entry("1", "i", "fdweweffer")
-    print(db.db)
-    db.delete_entry("1", "i")
-    print(db.db)
-    db.close()
