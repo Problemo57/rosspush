@@ -46,6 +46,7 @@ def check_changes(time_plan, class_url):
 
 def check_all_files_for_changes():
     class_names = get_all_class_names()
+    save_time_plan(class_names, "class_names")
     changed_files = []
 
     for class_name, class_url in class_names.items():
