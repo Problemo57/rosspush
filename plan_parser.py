@@ -1,8 +1,10 @@
 from abc import ABC
 from html.parser import HTMLParser
+import json
 
 
 class _PlanParser(HTMLParser, ABC):
+
     table_tag_level = 0
     time_table_table_found = 0  # 0: NO, 1: Found, 2: Write to time_plan
 
@@ -24,6 +26,24 @@ class _PlanParser(HTMLParser, ABC):
     def __init__(self, plan_typ):
         super().__init__()
         self.plan_typ = plan_typ
+
+        self.table_tag_level = 0
+        self.time_table_table_found = 0  # 0: NO, 1: Found, 2: Write to time_plan
+
+        # Makes a two dimensional Dict. 10*12
+        self.time_plan = {i/2+0.5: {x: {"same_as_before": False, "nothing": False, "free": False} for x in range(1, 13)} for i in range(1, 11)}
+
+        # The first tr Tag is not a school hour
+        self.time_hour_count = -1
+
+        # Increments per td by 0.5 and hour index starts at 1
+        self.time_day_count = 0.5
+
+        # Used for knowing what info the "handle_data" function gets
+        self.time_day_hour_info_state = 0
+
+        # Used first to find the right table und second in handle_data to find free hours
+        self.encounters = 0
 
     def handle_starttag(self, tag, attrs):
         if tag == "table":
@@ -161,7 +181,8 @@ def _clean_parsing_output(parsing_data):
     _clean_free_hours(parsing_data)
     parsing_data = _remove_float(parsing_data)
 
-    return parsing_data
+    # Changes the int keys to string
+    return json.loads(json.dumps(parsing_data))
 
 
 def _get_table_index(html):
