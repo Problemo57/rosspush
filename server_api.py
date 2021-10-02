@@ -28,7 +28,7 @@ def getFile(path):
     except FileNotFoundError:
         pass
 
-    return b"[404]"
+    return b""
 
 
 class MyServer(http.server.BaseHTTPRequestHandler):
