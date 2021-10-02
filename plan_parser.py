@@ -136,7 +136,7 @@ class _PlanParser(HTMLParser, ABC):
 
         # 0 -> 1 -> 2 -> 0
         self.time_day_hour_info_state = (self.time_day_hour_info_state + 1) % 3
-        info_name = ["teacher", "room", "lesson"][self.time_day_hour_info_state]
+        info_name = ["lesson", "teacher", "room"][self.time_day_hour_info_state]
 
         self.time_plan[self.time_day_count][self.time_hour_count][info_name] = data
 
