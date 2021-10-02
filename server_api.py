@@ -53,3 +53,7 @@ def main(port):
     with socketserver.TCPServer(("", port), MyServer) as httpd:
         print("serving at port", port)
         httpd.serve_forever()
+
+
+if __name__ == "__main__":
+    main(18573)
