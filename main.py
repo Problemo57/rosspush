@@ -81,7 +81,6 @@ if __name__ == "__main__":
     print("Found change Time Plans:", change_files)
     send_notification_to_change_classes(change_files)
 
-    # updatePlans()
     #port = 18573
     #main(port)
 
