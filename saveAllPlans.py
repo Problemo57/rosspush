@@ -39,10 +39,14 @@ def check_changes(time_plan, class_url):
 
 def check_all_files_for_changes():
     class_names = get_all_class_names()
-    save_time_plan(class_names, "class_names")
+    room_names = get_all_room_names()
+    teacher_names = get_all_teacher_names()
+
+    names = class_names + room_names + teacher_names
+    save_time_plan(names, "names")
     changed_files = []
 
-    for class_name, class_url in class_names.items():
+    for class_name, class_url in names.items():
 
         time_plan = parse_time_plan(get_time_plan(class_url))
         changed = check_changes(time_plan, class_url)
