@@ -42,13 +42,14 @@ def check_all_files_for_changes():
     room_names = get_all_room_names()
     teacher_names = get_all_teacher_names()
 
-    names = class_names + room_names + teacher_names
-    save_time_plan(names, "names")
+    class_names.update(room_names)
+    class_names.update(teacher_names)
+    save_time_plan(class_names, "names")
     changed_files = []
 
-    for class_name, class_url in names.items():
+    for class_name, class_url in class_names.items():
 
-        time_plan = parse_time_plan(get_time_plan(class_url))
+        time_plan = get_time_plan(class_url)
         changed = check_changes(time_plan, class_url)
 
         if changed:
@@ -58,4 +59,4 @@ def check_all_files_for_changes():
 
 
 if __name__ == "__main__":
-    check_all_files_for_changes()
+    print(check_all_files_for_changes())
